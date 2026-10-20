@@ -1,2 +1,4 @@
 almapiwrapper
 pandas
+prometheus-client
+python-dotenv
