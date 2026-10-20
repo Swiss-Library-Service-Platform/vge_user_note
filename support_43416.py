@@ -86,7 +86,7 @@ def publish_result(result):
 
 
 def main():
-    config_log()
+    config_log("/var/log/vge_user_note/log.txt")
     load_dotenv(Path(__file__).with_name(".env.pushgateway"))
     result = {
         "candidate_users": float("nan"),
@@ -113,6 +113,15 @@ def main():
         result["errors_observed"] = int(errors.observed)
         result["duration_seconds"] = time.monotonic() - started
         result["last_run_timestamp_seconds"] = time.time()
+        logging.info(
+            "Job result: completed=%s, candidates=%s, unsynchronized_accounts=%s, "
+            "errors=%s, duration=%.1fs",
+            bool(result["execution_completed"]),
+            result["candidate_users"],
+            result["unsynchronized_accounts"],
+            result["errors_observed"],
+            result["duration_seconds"],
+        )
         try:
             publish_result(result)
         except Exception:
